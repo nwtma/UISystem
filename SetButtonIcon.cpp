@@ -1,35 +1,30 @@
-void UWLBattleview_ControlField::SetAttackButtonIcon(bool IsForce /*= false*/)
+void UBattleview_ControlField::SetAttackButtonIcon(bool IsForce /*= false*/)
 {
-    if (ListItem_AutoAttack == nullptr || ListItem_AutoAttack->IsValidLowLevel() == false)
+    if (Bt_Attack == nullptr || Bt_Attack->IsValidLowLevel() == false)
         return;
 
-    if(ListItem_AutoAttack->GetActionType() == EInputKeyType::Attack && IsForce == false)
+    if (Bt_Attack->GetInputType() == EInputType::Attack && IsForce == false)
         return;
 
     if (m_OwnCharacter == nullptr || m_OwnCharacter->IsValidLowLevel() == false)
         return;
 
-    const FWLCharacterData* CharacterData = m_OwnCharacter->GetCharacterData<FWLCharacterData>();
-    if(CharacterData == nullptr)
+    const FCharacterData* CharacterData = m_OwnCharacter->GetCharacterData<FCharacterData>();
+    if (CharacterData == nullptr)
         return;
 
-    UWLTable* Table = GameInstance->GetInstance<UWLTable>();
-    if(Table == nullptr || Table->IsValidLowLevel() == false)
-        return;
-        
-    FWLSkillSetData* SkillSetData = Table->GetSkillSetDataAt(CharacterData->skill_set_idx);
-    if(SkillSetData.attack_list.Num() == 0)
+    UTable* Table = GameInstance->GetInstance<UTable>();
+    if (Table == nullptr || Table->IsValidLowLevel() == false)
         return;
 
-    int32 AttackTableID = SkillSetData.attack_list[0];
+    FSkillSetData SkillSetData = Table->GetSkillSetDataAt(CharacterData->skill_set_idx);
     
-    FWLSkillData SkillData;
-    if(Table->GetSkillDataAt(AttackTableID, SkillData) == true)
-    {
-        FWLIconCode IconTable = Table->GetIconCodeDataAt(SkillData.icon);
-        IconTable.icon_path.LoadSynchronous();
+    int32 AttackTableID = SkillSetData.attack_list[0];
+    FSkillData SkillData = Table->GetSkillDataAt(AttackTableID);
+    
+    FIconCode IconTable = Table->GetIconCodeDataAt(SkillData.icon);
+    IconTable.icon_path.LoadSynchronous();
 
-        ListItem_AutoAttack->SetActionType(EInputKeyType::Attack);
-        ListItem_AutoAttack->SetButtonIconEvent(IconTable.icon_path.Get());
-    }
+    Bt_Attack->SetInputType(EInputType::Attack);
+    Bt_Attack->SetButtonIconEvent(IconTable.icon_path.Get());
 }
