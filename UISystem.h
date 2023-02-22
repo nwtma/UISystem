@@ -25,9 +25,9 @@ public:
 	UUISystem();
 	~UUISystem();
 
-	TWeakObjectPtr<UCustomWidget> GetActiveWidget(const FName& InName);	// 화면에 띄워진 위젯 중 가져오기
-	void ShowWidget(const FName& InName);								// 화면에 위젯을 그림
-	void RemoveWidget(const FName& InName);								// 화면에 그려진 위젯 지우기
+	TWeakObjectPtr<UCustomWidget> GetActiveWidget(const FName& InName); // 화면에 띄워진 위젯 중 가져오기
+	void ShowWidget(const FName& InName); // 화면에 위젯을 그림
+	void RemoveWidget(const FName& InName); // 화면에 그려진 위젯 지우기
 	
 private:
 	UCustomWidget* LoadWidget(const FName& InName);
